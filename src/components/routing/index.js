@@ -8,3 +8,16 @@ export const isAuthenticated = () => {
         return false
     }
 }
+
+// import React from 'react'
+
+//  export const isAuthenticated =() =>{
+//     return (
+//         <div>
+            
+//         </div>
+//     )
+// }
+
+
+// export default isAuthenticated;

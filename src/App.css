@@ -5,12 +5,41 @@
   background-size: 100%;
 }
 
-.card {
+#login .card {
   margin: 100px auto;
   box-shadow: 0px 0px 10px 0px #000;
 }
 
 
-.card-header h4{
+#login .card-header h4{
   text-align: center;
+}
+
+
+#register .card {
+  margin: 100px auto;
+  box-shadow: 0px 0px 10px 0px #000;
+}
+
+
+#register .card-header h4{
+  text-align: center;
+}
+#forgetPassword .card {
+  margin: 100px auto;
+  box-shadow: 0px 0px 10px 0px #000;
+}
+
+
+#forgetPassword .card-header h4{
+  text-align: center;
+}
+
+/* .table{
+  word-break: break-all;
+} */
+
+
+nav{
+  margin-bottom: 40px;
 }
