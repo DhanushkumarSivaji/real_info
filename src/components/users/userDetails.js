@@ -3,44 +3,45 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 
-const UserDetail = ({userData,history}) => {
+const UserDetail = ({ userData, history }) => {
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    type: ""
+  });
 
-    const [user, setUser] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        type: ""
+  useEffect(() => {
+    if (!userData) {
+      history.push("/user");
+    } else {
+      setUser({
+        ...user,
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        type: userData.type
       });
+    }
+    // eslint-disable-next-line
+  }, []);
 
-      
-    useEffect(() => {
-  
-        if(!userData){
-            history.push('/user')
-        }else{
-            setUser({
-                ...user,
-                name: userData.name,
-                email: userData.email,
-                phone: userData.phone,
-                type: userData.type
-              });
-        }
-        // eslint-disable-next-line
-      }, []);
+  const { name, email, phone, type } = user;
 
-      const { name, email, phone, type } = user;
-
-      const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
+  const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
 
   return (
     <div>
-       
       <section id="actions" className="py-4 mb-4 bg-light">
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <a href="!#" className="btn btn-light btn-block">
+              <a
+                onClick={() => {
+                  history.push("/user");
+                }}
+                className="btn btn-light btn-block"
+              >
                 <i className="fas fa-arrow-left"></i> Back To Dashboard
               </a>
             </div>
@@ -67,46 +68,46 @@ const UserDetail = ({userData,history}) => {
                 </div>
                 <div className="card-body">
                   <form>
-                  <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input
-                          type="name"
-                          name="name"
-                          value={name}
-                          onChange={onChange}
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={email}
-                          onChange={onChange}
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="phone">Password</label>
-                        <input
-                          type="text"
-                          name="phone"
-                          value={phone}
-                          onChange={onChange}
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="type">Confirm Password</label>
-                        <input
-                          type="text"
-                          name="type"
-                          value={type}
-                          onChange={onChange}
-                          className="form-control"
-                        />
-                      </div>
+                    <div className="form-group">
+                      <label htmlFor="name">Name</label>
+                      <input
+                        type="name"
+                        name="name"
+                        value={name}
+                        onChange={onChange}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="email">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={onChange}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone">Password</label>
+                      <input
+                        type="text"
+                        name="phone"
+                        value={phone}
+                        onChange={onChange}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="type">Confirm Password</label>
+                      <input
+                        type="text"
+                        name="type"
+                        value={type}
+                        onChange={onChange}
+                        className="form-control"
+                      />
+                    </div>
                     <div className="form-group">
                       <label htmlFor="category">License</label>
                       <select className="form-control">
@@ -127,9 +128,7 @@ const UserDetail = ({userData,history}) => {
 };
 
 const mapStateToProps = state => ({
-    userData: state.contact.user
-  });
+  userData: state.contact.user
+});
 
-export default compose(withRouter,connect(mapStateToProps, {  }))(
-    UserDetail
-  );;
+export default compose(withRouter, connect(mapStateToProps, {}))(UserDetail);

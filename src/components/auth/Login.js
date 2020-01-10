@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { login } from "../../actions/authAction";
 import { Link } from "react-router-dom";
-import Alert from './Alert'
+import Alert from "./Alert";
 
 const Login = ({ login, history, error, isAuthenticated, check }) => {
   const [user, setUser] = useState({
-    email: "",
-    password: ""
+    email: "dhanushkumarstudy@gmail.com",
+    password: "123456"
   });
-
 
   useEffect(() => {
     if (isAuthenticated) {
       history.push("/user");
     }
-
 
     // eslint-disable-next-line
   }, [error, isAuthenticated, history]);
@@ -34,14 +32,14 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
         password
       });
 
-      setUser({...user,email:'',password:''})
+      setUser({ ...user, email: "", password: "" });
     }
   };
 
   return (
     <section id="login">
       <div className="bg">
-        <Alert/>
+        <Alert />
         <div className="container">
           <div className="row">
             <div className="col-md-6 mx-auto">
@@ -76,11 +74,14 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
                       value="Login"
                       className="btn btn-dark btn-block"
                     ></input>
-                
+
                     <Link to="/forgetpassword">Forgot password?</Link>
                     <hr></hr>
 
-                    <Link to="/register" className="btn btn-outline-primary btn-block">
+                    <Link
+                      to="/register"
+                      className="btn btn-outline-primary btn-block"
+                    >
                       Register
                     </Link>
                   </form>
@@ -96,7 +97,7 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.login.isAuthenticated,
-  error: state.login.error,
+  error: state.login.error
 });
 
 export default connect(mapStateToProps, { login })(Login);

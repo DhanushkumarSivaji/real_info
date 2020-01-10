@@ -1,12 +1,19 @@
 import React, { useEffect } from "react";
-import { loadUser } from "../../actions/authAction";
-import { getContacts,getUser } from "../../actions/contactAction";
+import { loadUser, logout } from "../../actions/authAction";
+import { getContacts, getUser } from "../../actions/contactAction";
 import { connect } from "react-redux";
-import {withRouter} from 'react-router-dom';
-import {compose} from 'redux'
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
-const UserDashboard = ({ user, error, contacts, getContacts,history,getUser }) => {
-
+const UserDashboard = ({
+  user,
+  error,
+  contacts,
+  getContacts,
+  history,
+  getUser,
+  logout
+}) => {
   useEffect(() => {
     loadUser();
     getContacts();
@@ -14,22 +21,21 @@ const UserDashboard = ({ user, error, contacts, getContacts,history,getUser }) =
     // eslint-disable-next-line
   }, []);
 
-const Logout = ()=> {
-    // history.push('/hi')
-    console.log("hi")
-}
+  const Logout = () => {
+    logout();
+    history.push("/");
+  };
 
-const DetailPage = (data)  => {
-    getUser(data)
-    history.push('/userdetails')
-}   
-
+  const DetailPage = data => {
+    getUser(data);
+    history.push("/userdetails");
+  };
 
   return (
     <div>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-0">
         <div className="container">
-          <a href="!#" className="navbar-brand">
+          <a href="" className="navbar-brand">
             User Dashboard
           </a>
           <button
@@ -42,12 +48,12 @@ const DetailPage = (data)  => {
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item dropdown mr-3">
-                <a href="!#" className="nav-link ">
+                <a href="" className="nav-link ">
                   <i className="fas fa-user"></i> {user && user.name}
                 </a>
               </li>
               <li className="nav-item">
-                <a href="!#" onClick={Logout} className="nav-link">
+                <a href="" onClick={Logout} className="nav-link">
                   <i className="fas fa-user-times"></i> Logout
                 </a>
               </li>
@@ -70,23 +76,25 @@ const DetailPage = (data)  => {
                   </tr>
                 </thead>
                 <tbody>
-                {contacts &&
-                  contacts.map((data,index) => (
-                    
+                  {contacts &&
+                    contacts.map((data, index) => (
                       <tr key={index}>
                         <td>{data.name}</td>
                         <td>{data.email}</td>
                         <td>{data.phone}</td>
                         <td>{data.type}</td>
                         <td>
-                          <a onClick={e => DetailPage(data)} href="#" className="btn btn-secondary">
-                            <i className="fas fa-angle-double-right"></i> Details
-                          </a>
+                          <button
+                            onClick={e => DetailPage(data)}
+                            className="btn btn-secondary"
+                          >
+                            <i className="fas fa-angle-double-right"></i>{" "}
+                            Details
+                          </button>
                         </td>
                       </tr>
-                    
-                  ))}
-                  </tbody>
+                    ))}
+                </tbody>
               </table>
             </div>
           </div>
@@ -101,6 +109,7 @@ const mapStateToProps = state => ({
   contacts: state.contact.contacts
 });
 
-export default compose(withRouter,connect(mapStateToProps, { loadUser, getContacts ,getUser }))(
-  UserDashboard
-);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { loadUser, getContacts, getUser, logout })
+)(UserDashboard);

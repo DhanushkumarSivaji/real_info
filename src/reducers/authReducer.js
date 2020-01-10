@@ -17,7 +17,7 @@ const initialState = {
   isLoading: false,
   user: null,
   error: null,
-  isRegistered:null
+  isRegistered: null
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -41,11 +41,12 @@ export default (state = initialState, action) => {
     case REGISTER_SUCCESS:
       return {
         ...state,
-        isRegistered:true
-      }
+        isRegistered: true
+      };
     case LOGIN_FAIL:
     case SET_ALERT:
     case REGISTER_FAIL:
+    case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
       return {
         ...state,
