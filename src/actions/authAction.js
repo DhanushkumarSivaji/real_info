@@ -1,6 +1,6 @@
+import axios from 'axios';
 import {
   USER_LOADED,
-  USER_LOADING,
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
@@ -8,99 +8,93 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   SET_ALERT,
-  REMOVE_ALERT
-} from "./types";
-import axios from "axios";
-import setAuthToken from "../components/utils/setAuthToken";
-import store from "../store";
+  REMOVE_ALERT,
+  SET_LOADING,
+} from './types';
+import setAuthToken from '../components/utils/setAuthToken';
+import store from '../store';
 
 // Load User
 export const loadUser = async () => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
-
+  store.dispatch({ type: SET_LOADING });
   try {
-    const res = await axios.get("http://10.200.2.191:5000/api/auth");
+    const res = await axios.get('http://localhost:5000/api/auth');
 
     store.dispatch({
       type: USER_LOADED,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     store.dispatch({ type: AUTH_ERROR });
   }
 };
 
-export const login = formData => async dispatch => {
+export const login = (formData) => async (dispatch) => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   try {
-    const res = await axios.post(
-      "http://10.200.2.191:5000/api/auth",
-      formData,
-      config
-    );
+    const res = await axios.post('http://localhost:5000/api/auth', formData, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: res.data
+      payload: res.data,
     });
 
     loadUser();
   } catch (error) {
     dispatch({
-      type: LOGIN_FAIL
+      type: LOGIN_FAIL,
     });
 
     dispatch({
       type: SET_ALERT,
-      payload: error.response.data.msg
+      payload: error.response.data.msg,
     });
 
     setTimeout(() => dispatch({ type: REMOVE_ALERT }), 3000);
   }
 };
 
-export const register = ({ name, email, password }) => dispatch => {
+export const register = ({ name, email, password }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   // Request body
   const body = JSON.stringify({ name, email, password });
 
   axios
-    .post("http://10.200.2.191:5000/api/users", body, config)
-    .then(res =>
+    .post('http://localhost:5000/api/users', body, config)
+    .then((res) => dispatch({
+      type: REGISTER_SUCCESS,
+      payload: res.data,
+    }))
+    .catch((err) => {
       dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data
-      })
-    )
-    .catch(err => {
-      dispatch({
-        type: REGISTER_FAIL
+        type: REGISTER_FAIL,
       });
 
       dispatch({
         type: SET_ALERT,
-        payload: err.response.data.msg
+        payload: err.response.data.msg,
       });
 
       setTimeout(() => dispatch({ type: REMOVE_ALERT }), 3000);
     });
 };
 
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
   dispatch({
-    type: LOGOUT_SUCCESS
+    type: LOGOUT_SUCCESS,
   });
 };

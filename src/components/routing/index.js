@@ -1,22 +1,11 @@
-export const isAuthenticated = () => {
-  if (typeof window == "undefined") {
+const isAuthenticated = () => {
+  if (typeof window === 'undefined') {
     return false;
   }
   if (localStorage.token) {
     return localStorage.token;
-  } else {
-    return false;
   }
+  return false;
 };
 
-// import React from 'react'
-
-//  export const isAuthenticated =() =>{
-//     return (
-//         <div>
-
-//         </div>
-//     )
-// }
-
-// export default isAuthenticated;
+export default isAuthenticated;

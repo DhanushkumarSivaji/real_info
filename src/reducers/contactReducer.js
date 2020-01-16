@@ -1,8 +1,8 @@
-import { GET_CONTACTS, GET_USER } from "../actions/types";
+import { GET_CONTACTS, GET_USER } from '../actions/types';
 
 const initialState = {
   contacts: null,
-  user: null
+  user: null,
 };
 
 export default (state = initialState, action) => {
@@ -10,12 +10,12 @@ export default (state = initialState, action) => {
     case GET_CONTACTS:
       return {
         ...state,
-        contacts: action.payload
+        contacts: action.payload,
       };
     case GET_USER:
       return {
         ...state,
-        user: action.payload
+        user: action.payload,
       };
     default:
       return state;

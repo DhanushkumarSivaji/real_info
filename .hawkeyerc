@@ -1,0 +1,6 @@
+{
+  "all": true,
+  "json": "hawkeye-results.json",
+  "failOn": "critical",
+  "showCode": true
+}

@@ -1,38 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { login } from "../../actions/authAction";
-import { Link } from "react-router-dom";
-import Alert from "./Alert";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { login } from '../../actions/authAction';
 
-const Login = ({ login, history, error, isAuthenticated, check }) => {
+import {
+  LOGIN_HEADER,
+  EMAIL_FIELD_TEXT,
+  PASSWORD_FIELD_TEXT,
+  FORGET_PASSWORD_LINK_TEXT,
+  LOGIN_BUTTON_TEXT,
+  REGISTER_BUTTON_TEXT,
+} from './Constants';
+import Alert from './Alert';
+
+const Login = ({
+  login, history, error, isAuthenticated,
+}) => {
   const [user, setUser] = useState({
-    email: "dhanushkumarstudy@gmail.com",
-    password: "123456"
+    email: 'dhanushkumarstudy@gmail.com',
+    password: '123456',
   });
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push("/user");
+      history.push('/user');
     }
 
     // eslint-disable-next-line
-  }, [error, isAuthenticated, history]);
+  }, [error, isAuthenticated, history, login]);
 
   const { email, password } = user;
 
-  const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
+  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    if (email === "" || password === "") {
-      alert("Please fill in all fields", "danger");
+    if (email === '' || password === '') {
+      alert('Please fill in all fields', 'danger');
     } else {
       login({
         email,
-        password
+        password,
       });
 
-      setUser({ ...user, email: "", password: "" });
+      setUser({ ...user, email: '', password: '' });
     }
   };
 
@@ -45,12 +57,12 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
             <div className="col-md-6 mx-auto">
               <div className="card">
                 <div className="card-header">
-                  <h4>Login</h4>
+                  <h4>{LOGIN_HEADER}</h4>
                 </div>
                 <div className="card-body">
                   <form onSubmit={onSubmit}>
                     <div className="form-group">
-                      <label htmlFor="email">Email</label>
+                      <label htmlFor="email">{EMAIL_FIELD_TEXT}</label>
                       <input
                         type="email"
                         name="email"
@@ -60,7 +72,7 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="password">Password</label>
+                      <label htmlFor="password">{PASSWORD_FIELD_TEXT}</label>
                       <input
                         type="password"
                         name="password"
@@ -71,18 +83,15 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
                     </div>
                     <input
                       type="submit"
-                      value="Login"
+                      value={LOGIN_BUTTON_TEXT}
                       className="btn btn-dark btn-block"
-                    ></input>
+                    />
 
-                    <Link to="/forgetpassword">Forgot password?</Link>
-                    <hr></hr>
+                    <Link to="/forgetpassword">{FORGET_PASSWORD_LINK_TEXT}</Link>
+                    <hr />
 
-                    <Link
-                      to="/register"
-                      className="btn btn-outline-primary btn-block"
-                    >
-                      Register
+                    <Link to="/register" className="btn btn-outline-primary btn-block">
+                      {REGISTER_BUTTON_TEXT}
                     </Link>
                   </form>
                 </div>
@@ -95,58 +104,16 @@ const Login = ({ login, history, error, isAuthenticated, check }) => {
   );
 };
 
-const mapStateToProps = state => ({
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  history: PropTypes.isRequired,
+};
+
+const mapStateToProps = (state) => ({
   isAuthenticated: state.login.isAuthenticated,
-  error: state.login.error
+  error: state.login.error,
 });
 
 export default connect(mapStateToProps, { login })(Login);
-
-// import React,{useEffect} from "react";
-// import { Formik } from "formik";
-// import * as Yup from "yup";
-// import { connect } from 'react-redux';
-// import {login} from '../../actions/loginAction';
-// import { Link, withRouter } from "react-router-dom";
-// import { useHistory } from 'react-router-dom';
-
-// const ValidatedLoginForm = ({login}) => (
-
-//   <Formik
-//     initialValues={{ email: "", password: "" }}
-//     onSubmit={(values, { setSubmitting }) => {
-//       setTimeout(() => {
-//         console.log("Logging in", values);
-//         login(values)
-//         setSubmitting(false);
-//       }, 500);
-
-//     }}
-//     validationSchema={Yup.object().shape({
-//       email: Yup.string()
-//         .email()
-//         .required("Required"),
-//       password: Yup.string()
-//         .required("No password provided.")
-//         .min(8, "Password is too short - should be 8 chars minimum.")
-//         .matches(/(?=.*[0-9])/, "Password must contain a number.")
-//     })}
-//   >
-//     {props => {
-//       const {
-//         values,
-//         touched,
-//         errors,
-//         isSubmitting,
-//         handleChange,
-//         handleBlur,
-//         handleSubmit
-//       } = props;
-//       return (
-
-//       );
-//     }}
-//   </Formik>
-// );
-
-// export default connect(null,{login})(ValidatedLoginForm);
